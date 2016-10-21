@@ -1,0 +1,15 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "test a chat bot in node.js",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mounir hamza",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.2.3",
+    "restify": "^4.1.1"
+  }
+}
