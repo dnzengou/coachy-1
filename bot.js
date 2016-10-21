@@ -31,11 +31,8 @@ server.post('/api/messages', connector.listen());
 
 config.load(
     function(err){
-        if(err)logger.info(err);           
-
-        //=========================================================
-        // Dialog Profile
-        //=========================================================
+        if(err)
+        logger.info(err);           
 
         bot.dialog('/', [
             function (session, args, next) {
@@ -47,7 +44,11 @@ config.load(
             },
             function (session, results) {
                 session.send('Hello %s !', session.userData.name);
-                session.beginDialog('/menu');
+                session.send('Presentation !');
+                session.beginDialog('/help');
+            }, 
+            function (session, results) {
+                session.send("Ok... See you later %s!",session.userData.name);
             }
         ]);
 
@@ -61,46 +62,30 @@ config.load(
             }
         ]);
 
-        //=========================================================
-        // Dialog Menu
-        //=========================================================
-
-        bot.dialog('/menu', [
+        bot.dialog('/help', [
             function (session) {
-                builder.Prompts.choice(session, "What demo would you like to run?", "imc|picture|cards|list|carousel|receipt|actions|(quit)");
+                builder.Prompts.text(session, 'how can i help you');
             },
             function (session, results) {
-                if (results.response && results.response.entity != '(quit)') {
-                    session.beginDialog('/' + results.response.entity);
-                } else {
-                    session.endDialog();
-                }
-            },
-            function (session, results) {
-                session.replaceDialog('/menu');
+                session.userData.objectif = results.response.entity;
+                session.beginDialog('/imc');
             }
-        ]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });
-
-        //=========================================================
-        // Dialog Profile 
-        //=========================================================
-
-
+        ]);
 
          bot.dialog('/imc', [
             function (session, args) {
-                if (args && args.reprompt) {
-                    builder.Prompts.text(session, "Entre ton poids(kg) suivi de ta taille(cm) ex : 72 - 178")
-                } else {
-                    builder.Prompts.text(session, "Entre ton poids(kg) suivi de ta taille(cm) ex : 72 - 178");
-                }
+                 builder.Prompts.text(session, 'presentation pour calcul imc');
             },
             function (session, results) {
-                logger.info(results.response);
-                var res = results.response.split("-");
-                res = util.imc(res[0],res[1]);
-                builder.Prompts.text(session, "Ton IMC est de "+res);
-                session.endDialog();
+                builder.Prompts.text(session, 'demande weight');
+                session.userData.weight = results.response.entity;
+            },
+            function (session, results) {
+                builder.Prompts.text(session, 'demande heigth');
+                session.userData.heigth = results.response.entity;
+            },
+            function (session, results) {
+                builder.Prompts.text(session, 'presentation imc %s %s',session.userData.heigth,session.userData.weight);
             }
         ]);
 });

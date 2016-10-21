@@ -1,5 +1,14 @@
 {
     "mdp":"fW02FbinYFXSF8D7nkSxeXR",
     "id":"a209a774-6f94-44e0-84cd-573ed328ee9c",
-    "name":"FitBot"
+    "name":"FitBot",
+    "presentation" : "Hy I’m Nadia your fitness assistant. I will help you during your training. I can find the right program for your goal, find a sport center around you and even help you finding the right equipment or sport buddy. How can I help you today ?",
+    "weight" : "Ok ! Can you give me your weight", 
+    "height" : "and height ?",
+    "overweight" :  "Your IMC is …. but I still can help you :wink: ! I will folow you during all your process don’t worry mate.",
+    "exercices1" : "Here is what I suggest.",
+    "questionsatisfied" : "Are you satisfied with this list ?",
+    "thanks" : "I’m glad I have helped you. There are some sport centers around you.",
+    "subcribe" : "Do you want me to subcribe you to one of them ?",
+    "end" : "Ok ! If you ned any help don’t be shy to ask. I’m here for helping you. If you do it right you’ll be happy of what you see in the mirror" 
 }
