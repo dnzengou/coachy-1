@@ -57,8 +57,10 @@ config.load(
                 builder.Prompts.text(session, 'Hi ! What is your name ?');
             },
             function (session, results) {
-                session.userData.name = results.response;
-                session.endDialog();
+                if(results.response){
+                    session.userData.name = results.response;
+                    session.endDialog();
+                }
             }
         ]);
 
@@ -67,27 +69,52 @@ config.load(
                 builder.Prompts.text(session, 'how can i help you');
             },
             function (session, results) {
-                session.userData.objectif = results.response.entity;
+                session.userData.objectif = results.response;
+                session.send('your objectif %s',session.userData.objectif); 
                 session.beginDialog('/imc');
             }
         ]);
 
          bot.dialog('/imc', [
             function (session, args) {
-                 builder.Prompts.text(session, 'presentation pour calcul imc');
+                session.send('presentation pour calcul imc'); 
+                builder.Prompts.number(session, 'demande weight');
             },
             function (session, results) {
-                builder.Prompts.text(session, 'demande weight');
-                session.userData.weight = results.response.entity;
+                session.userData.weight = results.response;
+                builder.Prompts.number(session, 'demande heigth');
             },
             function (session, results) {
-                builder.Prompts.text(session, 'demande heigth');
-                session.userData.heigth = results.response.entity;
-            },
-            function (session, results) {
-                builder.Prompts.text(session, 'presentation imc %s %s',session.userData.heigth,session.userData.weight);
+                session.userData.heigth = results.response;
+                session.send('resultat imc %s %s',session.userData.heigth,session.userData.weight);
+                session.beginDialog('/programs');
             }
         ]);
+
+        bot.dialog('/programs', [
+            function (session, args) {
+                session.send('presentation programs'); 
+                var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("Fitness")
+                    .subtitle("Adbominal beginners program")
+                    .text("The abdominal programme.")
+                    .images([
+                        builder.CardImage.create(session, "http://www.musculaction.com/images/intro-exercices-abdominaux.jpg")
+                    ])
+                    .tap(builder.CardAction.openUrl(session, "http://entrainement-sportif.fr/programme-musculation-abdominaux-debutant.pdf"))
+            ]);
+        session.send(msg);
+                builder.Prompts.text(session, 'is good ?');
+            },
+            function (session, results) {
+                session.beginDialog('/help');
+            }
+        ]);
+
+
 });
 
 
