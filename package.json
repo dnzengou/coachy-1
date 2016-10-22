@@ -17,8 +17,11 @@
 	"url":"https://github.com/toomai/Hackathon.git"
   },
 	"env":{
-		"NODE_ENV":"",
+		"NODE_ENV":"developement",
 		"MICROSOFT_APP_ID":"6c863556-22a2-4fa4-98b0-c73965f73196",
 		"MICROSOFT_APP_PASSWORD":"ttS9AigynnPkNyJgkVcBK8p"
-	}
+	},
+  "engines": {
+    "node": "4.6.1"
+}
 }
