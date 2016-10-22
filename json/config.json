@@ -1,14 +1,15 @@
 {
-"presentation" : "I’m Nadia your fitness assistant. I will help you during your training. I can find the right program for your goal, find a sport center around you and even help you finding the right equipment or sport buddy. How can I help you today ?",
-"weightt":" Ok ! Can you give me your weight", 
+  "help":"How can I help you today ? Type a command like \"I want to lose 5kg\" or \"I want new shoes\".",
+"presentation" : "I’m Nadia your fitness assistant. I will help you during your training. I can find the right program for your goal, find a sport center around you and even help you finding the right equipment or sport buddy. ",
+"weightt":" Ok ! Could you give me your weight",
 "height" : "and height ?",
-"overweight" :  " but I still can help you :wink: ! I will folow you during all your process don’t worry mate.",
+"overweight" :  " but I can still help you :wink: ! I will folow you during the process don’t worry mate.",
 "askfrequency" : "How often would you like to work out?",
-"minute" : "How much time are you ready to work out ? ",
+"minute" : "How long do you want to work out ? ",
 "programs" : "Here is what I suggest. ",
 "questionsatisfied" : "Are you satisfied with this list ? ",
 "thanks" : "I’m glad I have helped you.",
 "anythingelse" : "Can I do anything else for you ?",
-"outfit" : "Of course ! here some good outfit for your training. Hope you’ll find something that sute you. ",
-"end" : "If you need any help don’t be shy to ask. I’m here for helping you. If you do it right you’ll be happy of what you see in the mirror "
+"outfit" : "Of course ! Here is some good outfit for your training. Hope you’ll find something that suits you. ",
+"end" : "If you need any help don’t be shy, just ask. I’m here to help you. If you do it right you’ll be happy of what you'll see in the mirror "
 }

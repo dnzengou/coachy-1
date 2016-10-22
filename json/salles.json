@@ -1,0 +1,23 @@
+[
+ { "id": "1",
+   "titre":"Basic Fit.",
+   "ville":"Uccle",
+   "prix":"$",
+   "url":"http://www.basic-fit.com/",
+   "urlDef":"http://www.telesambre.tv/site/FCK_STOCK/Image/filinfo/1463491619124_tumblr_static_basic-fit-logo.jpg"
+ }
+,    { "id": "2",
+     "titre":"Jims",
+       "ville":"Soigne",
+   "prix":"$$$",
+   "url":"http://www.jimsfitness.be/fr/clubs",
+   "urlDef":"http://si.rosselcdn.net/sites/default/files/imagecache/pagallery_450x300/2015/04/24/4jims.jpg"
+   }
+,     { "id": "3",
+       "titre":"Fit&Fun",
+       "ville":"Ixelles",
+   "prix":"$$$$",
+   "url":"http://www.fitforfun.com/fr-BE/Nos-clubs-fitness/FitForFun-Wavre/Les-horaires.aspx",
+   "urlDef":"http://www.carteprof.be/upload/pics/firmes/000000000005/firme_000000004328_CWRXRUHMVG_m.jpg"
+     }
+]

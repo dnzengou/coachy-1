@@ -2,10 +2,13 @@ var restify = require('restify');
 var builder = require('botbuilder');
 var config = require('./modules/config.js');
 var logger = require('./modules/logger.js');
+
 var exos = require('./json/exos.json');
 var jsonProgram = require('./json/programs.json');
 var tips = require('./json/tips.json');
 var outfits = require('./json/outfits.json');
+var salles = require('./json/salles.json');
+
 var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=5906d0b8-deae-4a09-93cc-7e2dd928d641&subscription-key=de81f2eebace4e2ab0bc50081a7a2360');
 var intents = new builder.IntentDialog({recognizers:[recognizer]});
 
@@ -51,8 +54,11 @@ config.load(
                 }
             },
             function(session, results) {
-                    session.send('Hello %s !', session.userData.name);
-                    session.send(config.presentation);
+                    if(!session.userData.second){
+                        session.send('Hello %s !', session.userData.name);
+                        session.send(config.presentation);
+                    }
+                    session.send(config.help);
                     session.beginDialog('/help');
             }
         ]);
@@ -64,6 +70,7 @@ config.load(
             function(session, results) {
                 if (results.response) {
                     session.userData.name = results.response;
+                    session.userData.second = true;
                     session.endDialog();
                 }
             }
@@ -71,15 +78,6 @@ config.load(
 
         bot.dialog('/help', intents);
 
-       /* bot.dialog('/help', [
-            function(session) {
-                builder.Prompts.text(session, config.presentation);
-            },
-            function(session, results) {
-                session.userData.objectif = results.response;
-                session.beginDialog('/imc');
-            }
-        ]);*/
 
         bot.dialog('/imc', [
             function(session, args) {
@@ -118,62 +116,62 @@ config.load(
             }
         ]);
 
-
+//
         bot.dialog('/store', [
             function(session, args) {
                 session.send('%s', config.outfit);
-                session.beginDialog('/end');
-            },function(session, results) {
                  session.send(createCarrousselOutfit(outfits[1],outfits[3],outfits[5],session));
                  session.beginDialog('/end');
             }
         ]);
 
+        //
         bot.dialog('/end', [
             function(session, args, next) {
-                var k = 1;
                 if(session.userData.imc){
-                    session.send("I remember you your IMC %s.\n You have to train %s %s , don't forget !", session.userData.imc, session.userData.frequency, session.userData.time);
-                    k = 2;
+                    session.send("A little feedBack : your IMC %s.\n You have to train %s %s , don't forget !", session.userData.imc, session.userData.frequency, session.userData.time);
                 }
-                session.send("Here is a tips : %s", tips[k].content);
-                session.send("%s See you later %s !", config.end, session.userData.name);
-                session.endDialog();
+                session.send("Some tips for fun.");
+                 session.send(createCarrousselTips(tips[0],tips[1],tips[2],tips[3],session));
+                session.endConversation("%s See you later %s !", config.end, session.userData.name);
             }
         ]);
 
 
         bot.dialog('/exercices', [
             function(session, args, next) {
-              session.send("Here is some exercices %s", session.userData.name);         
-              session.send(createCarrousselExos(exos[3],exos[5],exos[7],session));  
-              session.send("I have an idea will you do your exercices in a nearby sport center ?");  
-              session.beginDialog('/nearby'); 
+              session.send("Here is some exercices %s", session.userData.name);
+              session.send(createCarrousselExos(exos[3],exos[5],exos[7],session));
+              session.send("I have an idea will you do your exercices in a nearby sport center ?");
+              session.beginDialog('/nearby');
             }
         ]);
 
+        //
         bot.dialog('/search', [
             function(session, args, next) {
-              //afficher
-              session.beginDialog('/end'); 
+              session.send(createCarrousselSalles(salles[0],salles[1],salles[2],session));
+              session.beginDialog('/end');
             }
         ]);
+
         bot.dialog('/nearby', intents);
-        
+
         intents.matches('LooseWeight','/imc');
         intents.matches('Tone','/exercices');
         intents.matches('Muscle','/exercices');
         intents.matches('FIndBuddy','/exercices');
         intents.matches('Exercice','/exercices');
+        intents.matches('Program','/programs');
         intents.matches('Gym',function(session, args, next){
-            session.beginDialog('/search');  
+            session.beginDialog('/search');
         });
 
     });
 
 
 
-        
+
 
 
 // utils
@@ -298,6 +296,95 @@ function createCarrousselExos(json1, json2, json3, session) {
             ])
             .buttons([
                 builder.CardAction.openUrl(session, json3.urlDef,"I want this")
+             ])
+        ]);
+    return msg;
+}
+
+//
+function createCarrousselTips(json1, json2, json3, json4, session) {
+    var msg = new builder.Message(session)
+        .textFormat(builder.TextFormat.xml)
+        .attachmentLayout(builder.AttachmentLayout.carousel)
+        .attachments([
+            new builder.HeroCard(session)
+            .title(json1.titre)
+            .images([
+                builder.CardImage.create(session, json1.url)
+                .tap(builder.CardAction.showImage(session, json1.url)),
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, json1.urlDef,"I read")
+            ]),
+            new builder.HeroCard(session)
+            .title(json2.titre)
+            .images([
+                builder.CardImage.create(session, json2.url)
+                .tap(builder.CardAction.showImage(session, json2.url)),
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, json2.urlDef,"I read")
+            ]),
+            new builder.HeroCard(session)
+            .title(json3.titre)
+            .images([
+                builder.CardImage.create(session, json3.url)
+                .tap(builder.CardAction.showImage(session, json3.url)),
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, json3.urlDef,"I read")
+             ]),
+            new builder.HeroCard(session)
+            .title(json4.titre)
+            .images([
+                builder.CardImage.create(session, json4.url)
+                .tap(builder.CardAction.showImage(session, json3.url)),
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, json4.urlDef,"I read")
+             ])
+        ]);
+    return msg;
+}
+
+//
+function createCarrousselSalles(json1, json2, json3,session) {
+    var msg = new builder.Message(session)
+        .textFormat(builder.TextFormat.xml)
+        .attachmentLayout(builder.AttachmentLayout.carousel)
+        .attachments([
+            new builder.HeroCard(session)
+            .title(json1.titre)
+            .subtitle("City : " + json1.ville)
+            .text("Prix : "+json1.prix +  " Temps : 20 min")
+            .images([
+                builder.CardImage.create(session, json1.url)
+                .tap(builder.CardAction.showImage(session, json1.url)),
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, json1.urlDef,"I subscribe")
+            ]),
+            new builder.HeroCard(session)
+            .title(json2.titre)
+            .subtitle("City : " + json1.ville)
+            .text("Prix : "+json1.prix +  " Temps : 25 min")
+            .images([
+                builder.CardImage.create(session, json2.url)
+                .tap(builder.CardAction.showImage(session, json2.url)),
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, json2.urlDef,"I subscribe")
+            ]),
+            new builder.HeroCard(session)
+            .title(json3.titre)
+            .subtitle("City : " + json1.ville)
+            .text("Prix : "+json1.prix +  " Temps : 15 min")
+            .images([
+                builder.CardImage.create(session, json3.url)
+                .tap(builder.CardAction.showImage(session, json3.url)),
+            ])
+            .buttons([
+                builder.CardAction.openUrl(session, json3.urlDef,"I subscribe")
              ])
         ]);
     return msg;
