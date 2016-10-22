@@ -137,4 +137,4 @@ config.load(
 });
 
 intents.matches('LooseWeight', '/imc');
-intents.matches('FindEquipement', '/store');
+//intents.matches('FindEquipement', '/store');
