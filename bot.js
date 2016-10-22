@@ -3,9 +3,10 @@ var builder = require('botbuilder');
 var config = require('./modules/config.js');
 var logger = require('./modules/logger.js');
 var util = require('./modules/utils.js');
+var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=5906d0b8-deae-4a09-93cc-7e2dd928d641&subscription-key=de81f2eebace4e2ab0bc50081a7a2360');
+var intents = new builder.IntentDialog({recognizers:[recognizer]});
 
-
-/*window.fbAsyncInit = function() {
+ /*window.fbAsyncInit = function() {
     FB.init({
       appId      : 'your-app-id',
       xfbml      : true,
@@ -32,7 +33,7 @@ var util = require('./modules/utils.js');
 config.load(
     function(err){
         if(err)
-        logger.info(err);           
+        logger.info(err);
 
 //=========================================================
         // Server et Bot configuration and create.
@@ -41,15 +42,15 @@ config.load(
 
         var server = restify.createServer();
         server.listen(3978, function () {
-        console.log('%s listening to %s', server.name, server.url); 
-        }); 
-        
+        console.log('%s listening to %s', server.name, server.url);
+        });
+
         var connector = new builder.ChatConnector({
             appId: '6c863556-22a2-4fa4-98b0-c73965f73196',
             appPassword: 'ttS9AigynnPkNyJgkVcBK8p'
         });
         var bot = new builder.UniversalBot(connector);
-        
+
         server.post('/api/messages', connector.listen());
         bot.dialog('/', [
             function (session, args, next) {
@@ -62,8 +63,9 @@ config.load(
             function (session, results) {
                 session.send('Hello %s !', session.userData.name);
                 session.send('Presentation !');
+                session.send('What can I do for you ?');
                 session.beginDialog('/help');
-            }, 
+            },
             function (session, results) {
                 session.send("Ok... See you later %s!",session.userData.name);
             }
@@ -81,20 +83,21 @@ config.load(
             }
         ]);
 
-        bot.dialog('/help', [
+        bot.dialog('/help', intents);
+        /*bot.dialog('/help', intents[
             function (session) {
                 builder.Prompts.text(session, 'how can i help you');
             },
             function (session, results) {
                 session.userData.objectif = results.response;
-                session.send('your objectif %s',session.userData.objectif); 
+                session.send('your objectif %s',session.userData.objectif);
                 session.beginDialog('/imc');
             }
-        ]);
+        ]);*/
 
          bot.dialog('/imc', [
             function (session, args) {
-                session.send('presentation pour calcul imc'); 
+                session.send('presentation pour calcul imc');
                 builder.Prompts.number(session, 'demande weight');
             },
             function (session, results) {
@@ -110,7 +113,7 @@ config.load(
 
         bot.dialog('/programs', [
             function (session, args) {
-                session.send('presentation programs'); 
+                session.send('presentation programs');
                 var msg = new builder.Message(session)
             .textFormat(builder.TextFormat.xml)
             .attachments([
@@ -131,8 +134,7 @@ config.load(
             }
         ]);
 
-
 });
 
-
-
+intents.matches('LooseWeight', '/imc');
+intents.matches('FindEquipement', '/store');
