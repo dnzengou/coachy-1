@@ -1,0 +1,89 @@
+{
+	"exoAbdo1": [
+	{ "titre": "gainage",
+		"url": "http://imworld.aufeminin.com/story/20160118/-848292_w1000.jpg",
+		"urlDef":"http://entrainement-sportif.fr/programme-musculation-abdominaux-debutant.pdf",
+		"temps":"30 sec",
+		"repetition":"3x",
+		"categorie": "mid",
+		"difficulte":"easy"
+	}
+	],"exoAbdo2": [
+	{ "titre": "classic",
+		"url":"http://www.formeathletique.com/wp-content/uploads/2016/02/exercice-abdominaux2.jpg",
+		"urlDef":"http://entrainement-sportif.fr/programme-musculation-abdominaux-debutant.pdf",
+		"temps":"3 min",
+		"repetition" :"3x",
+		"categorie": "mid",
+		"difficulte":"hard"
+	}
+	]
+		,"exoAbdo3": [
+		{ "titre": "legs up",
+			"url":"http://www.exercices-abdominaux.fr/images/leve_jambes2.jpg",
+			"urlDef":"http://entrainement-sportif.fr/programme-musculation-abdominaux-debutant.pdf",
+			"temps":"20 sec",
+			"repetition" :"5x",
+			"categorie": "mid",
+			"difficulte":"medium"
+		}
+		]
+			,"exoBras1": [
+			{ "titre": "pompe",
+				"url":"http://www.salto-arriere.fr/wp-content/uploads/2012/09/mouvementpompes.jpg",
+				"urlDef":"http://entrainement-sportif.fr/exercices-de-musculation-avec-halteres.pdf",
+				"temps":"30 sec",
+				"repetition" :"2x",
+				"categorie": "top",
+				"difficulte":"easy"
+			}
+			]
+				,"exoBras2": [
+				{ "titre": "traction",
+					"url":"http://www.ultimeathlete.com/wp-content/uploads/2013/11/t%C3%A9l%C3%A9chargement-1.jpg",
+					"urlDef":"http://entrainement-sportif.fr/exercices-de-musculation-avec-halteres.pdf",
+					"temps":"10 sec",
+					"repetition" :"3x",
+					"categorie": "top",
+					"difficulte":"hard"
+				}
+				],"exoBras3": [
+				{ "titre": "fonte",
+					"url":"http://www.conseilmuscu.com/wp-content/uploads/poidslever1-293x300.jpg",
+					"urlDef":"http://entrainement-sportif.fr/exercices-de-musculation-avec-halteres.pdf",
+					"temps":"1 min",
+					"repetition" :"2x",
+					"categorie": "top",
+					"difficulte":"medium"
+				}
+				]
+					,"exoLeg1": [
+					{ "titre": "ciseau",
+						"url":"https://s-media-cache-ak0.pinimg.com/originals/92/86/f8/9286f8e6ce07e10ab0b8b20a2270573e.jpg",
+						"urlDef":"http://www.templiers-nandrin.be/wp-content/uploads/2016/06/Programme-de-Preparation-Physique-Generale-Individuelle.pdf",
+						"temps":"1 min",
+						"repetition" :"2x",
+						"categorie": "bot",
+						"difficulte":"easy"
+					}
+					],"exoLeg2": [
+					{ "titre": "flexion",
+						"url":"http://swagactu.com/wp-content/uploads/2015/07/297875628433797.png",
+						"urlDef":"http://www.templiers-nandrin.be/wp-content/uploads/2016/06/Programme-de-Preparation-Physique-Generale-Individuelle.pdf",
+						"temps":"3 min",
+						"repetition" :"4x",
+						"categorie": "bot",
+						"difficulte":"hard"
+					}
+					]
+						,"exoLeg3": [
+						{ "titre": "pedaler",
+							"url":"https://s-media-cache-ak0.pinimg.com/originals/92/86/f8/9286f8e6ce07e10ab0b8b20a2270573e.jpg",
+							"urlDef":"http://www.templiers-nandrin.be/wp-content/uploads/2016/06/Programme-de-Preparation-Physique-Generale-Individuelle.pdf",
+							"temps":"1 min",
+							"repetition" :"3x",
+							"categorie": "bot",
+							"difficulte":"medium"
+						}
+						]
+}
