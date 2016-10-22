@@ -5,23 +5,23 @@ var logger = require('./modules/logger.js');
 var util = require('./modules/utils.js');
 
 
+/*window.fbAsyncInit = function() {
+    FB.init({
+      appId      : 'your-app-id',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+    FB.AppEvents.logPageView();
+  };
 
-//=========================================================
-// Server et Bot configuration and create.
-//=========================================================
-
-
-var server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, function () {
-   console.log('%s listening to %s', server.name, server.url); 
-}); 
-  
-var connector = new builder.ChatConnector({
-    appId: process.env.MICROSOFT_APP_ID,
-    appPassword: process.env.MICROSOFT_APP_PASSWORD
-});
-var bot = new builder.UniversalBot(connector);
-server.post('/api/messages', connector.listen());
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+*/
 
 
 
@@ -34,6 +34,23 @@ config.load(
         if(err)
         logger.info(err);           
 
+//=========================================================
+        // Server et Bot configuration and create.
+        //=========================================================
+
+
+        var server = restify.createServer();
+        server.listen(3978, function () {
+        console.log('%s listening to %s', server.name, server.url); 
+        }); 
+        
+        var connector = new builder.ChatConnector({
+            appId: '6c863556-22a2-4fa4-98b0-c73965f73196',
+            appPassword: 'ttS9AigynnPkNyJgkVcBK8p'
+        });
+        var bot = new builder.UniversalBot(connector);
+        
+        server.post('/api/messages', connector.listen());
         bot.dialog('/', [
             function (session, args, next) {
                 if (!session.userData.name) {
