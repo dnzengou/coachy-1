@@ -2,7 +2,7 @@
   "name": "chatbot",
   "version": "1.0.0",
   "description": "test a chat bot in node.js",
-  "main": "bot.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
