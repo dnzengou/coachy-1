@@ -31,11 +31,8 @@ server.post('/api/messages', connector.listen());
 
 config.load(
     function(err){
-        if(err)logger.info(err);           
-
-        //=========================================================
-        // Dialog Profile
-        //=========================================================
+        if(err)
+        logger.info(err);           
 
         bot.dialog('/', [
             function (session, args, next) {
@@ -47,7 +44,11 @@ config.load(
             },
             function (session, results) {
                 session.send('Hello %s !', session.userData.name);
-                session.beginDialog('/menu');
+                session.send('Presentation !');
+                session.beginDialog('/help');
+            }, 
+            function (session, results) {
+                session.send("Ok... See you later %s!",session.userData.name);
             }
         ]);
 
@@ -56,53 +57,64 @@ config.load(
                 builder.Prompts.text(session, 'Hi ! What is your name ?');
             },
             function (session, results) {
-                session.userData.name = results.response;
-                session.endDialog();
+                if(results.response){
+                    session.userData.name = results.response;
+                    session.endDialog();
+                }
             }
         ]);
 
-        //=========================================================
-        // Dialog Menu
-        //=========================================================
-
-        bot.dialog('/menu', [
+        bot.dialog('/help', [
             function (session) {
-                builder.Prompts.choice(session, "What demo would you like to run?", "imc|picture|cards|list|carousel|receipt|actions|(quit)");
+                builder.Prompts.text(session, 'how can i help you');
             },
             function (session, results) {
-                if (results.response && results.response.entity != '(quit)') {
-                    session.beginDialog('/' + results.response.entity);
-                } else {
-                    session.endDialog();
-                }
-            },
-            function (session, results) {
-                session.replaceDialog('/menu');
+                session.userData.objectif = results.response;
+                session.send('your objectif %s',session.userData.objectif); 
+                session.beginDialog('/imc');
             }
-        ]).reloadAction('reloadMenu', null, { matches: /^menu|show menu/i });
-
-        //=========================================================
-        // Dialog Profile 
-        //=========================================================
-
-
+        ]);
 
          bot.dialog('/imc', [
             function (session, args) {
-                if (args && args.reprompt) {
-                    builder.Prompts.text(session, "Entre ton poids(kg) suivi de ta taille(cm) ex : 72 - 178")
-                } else {
-                    builder.Prompts.text(session, "Entre ton poids(kg) suivi de ta taille(cm) ex : 72 - 178");
-                }
+                session.send('presentation pour calcul imc'); 
+                builder.Prompts.number(session, 'demande weight');
             },
             function (session, results) {
-                logger.info(results.response);
-                var res = results.response.split("-");
-                res = util.imc(res[0],res[1]);
-                builder.Prompts.text(session, "Ton IMC est de "+res);
-                session.endDialog();
+                session.userData.weight = results.response;
+                builder.Prompts.number(session, 'demande heigth');
+            },
+            function (session, results) {
+                session.userData.heigth = results.response;
+                session.send('resultat imc %s %s',session.userData.heigth,session.userData.weight);
+                session.beginDialog('/programs');
             }
         ]);
+
+        bot.dialog('/programs', [
+            function (session, args) {
+                session.send('presentation programs'); 
+                var msg = new builder.Message(session)
+            .textFormat(builder.TextFormat.xml)
+            .attachments([
+                new builder.HeroCard(session)
+                    .title("Fitness")
+                    .subtitle("Adbominal beginners program")
+                    .text("The abdominal programme.")
+                    .images([
+                        builder.CardImage.create(session, "http://www.musculaction.com/images/intro-exercices-abdominaux.jpg")
+                    ])
+                    .tap(builder.CardAction.openUrl(session, "http://entrainement-sportif.fr/programme-musculation-abdominaux-debutant.pdf"))
+            ]);
+        session.send(msg);
+                builder.Prompts.text(session, 'is good ?');
+            },
+            function (session, results) {
+                session.beginDialog('/help');
+            }
+        ]);
+
+
 });
 
 
