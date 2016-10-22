@@ -5,6 +5,7 @@ var logger = require('./modules/logger.js');
 var util = require('./modules/utils.js');
 var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=5906d0b8-deae-4a09-93cc-7e2dd928d641&subscription-key=de81f2eebace4e2ab0bc50081a7a2360');
 var intents = new builder.IntentDialog({recognizers:[recognizer]});
+var outfitJson = require('./outfits.json');
 
  /*window.fbAsyncInit = function() {
     FB.init({
@@ -133,8 +134,30 @@ config.load(
                 session.beginDialog('/help');
             }
         ]);
-
 });
 
 intents.matches('LooseWeight', '/imc');
-//intents.matches('FindEquipement', '/store');
+intents.matches('FindEquipement', [
+  function(session, args, next){
+    var productToBuy = builder.EntityRecognizer.findEntity(args.entities,'product');
+    if(!productToBuy){
+      builder.Prompts.text(session, "What would you like to buy ?");
+    }else{
+      next({response: productToBuy.entity});
+    }
+  },
+  function(session, results){
+    if(results.response){
+      session.send('Ok, i\'ll guide you through your journey for %s', results.response);
+      console.log(results.response)
+      for(var article in outfitJson){
+        if(results.response.toUpperCase() === outfitJson[article].categorie){
+          console.log(outfitJson[article]);
+        }
+
+      }
+    }else{
+      session.send("ok thanks");
+    }
+  }
+]);
