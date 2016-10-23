@@ -11,7 +11,7 @@ var salles = require('./json/salles.json');
 
 var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=5906d0b8-deae-4a09-93cc-7e2dd928d641&subscription-key=de81f2eebace4e2ab0bc50081a7a2360');
 var intents = new builder.IntentDialog({recognizers:[recognizer]});
-
+var appHttpPort = process.env.port || 3978;
 //=========================================================
 // Load configuration and Bots Dialogs
 //=========================================================
@@ -27,7 +27,7 @@ config.load(
 
 
         var server = restify.createServer();
-        server.listen(3978, function() {
+        server.listen(appHttpPort, function() {
             console.log('%s listening to %s', server.name, server.url);
         });
 
