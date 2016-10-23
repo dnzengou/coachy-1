@@ -1,8 +1,9 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-var config = require('./modules/configProp.js');
+var configProp = require('./modules/configProp.js');
 var logger = require('./modules/logger.js');
-//var configPort = require('./config/config.js');
+
+
 var exos = require('./json/exos.json');
 var jsonProgram = require('./json/programs.json');
 var tips = require('./json/tips.json');
@@ -16,7 +17,7 @@ var appHttpPort = process.env.port || 3978;
 // Load configuration and Bots Dialogs
 //=========================================================
 
-config.load(
+configProp.load(
     function(err) {
         if (err)
             logger.info(err);
@@ -56,9 +57,9 @@ config.load(
             function(session, results) {
                     if(!session.userData.second){
                         session.send('Hello %s !', session.userData.name);
-                        session.send(config.presentation);
+                        session.send(configProp.presentation);
                     }
-                    session.send(config.help);
+                    session.send(configProp.help);
                     session.beginDialog('/help');
             }
         ]);
@@ -81,34 +82,34 @@ config.load(
 
         bot.dialog('/imc', [
             function(session, args) {
-                builder.Prompts.number(session, config.weightt);
+                builder.Prompts.number(session, configProp.weightt);
             },
             function(session, results) {
                 session.userData.weightt = results.response;
-                builder.Prompts.number(session, config.height);
+                builder.Prompts.number(session, configProp.height);
             },
             function(session, results) {
                 session.userData.height = results.response;
                 session.userData.imc = imc(session.userData.weightt, session.userData.height);
-                session.send('Your IMC is %s %s', session.userData.imc, config.overweight);
+                session.send('Your IMC is %s %s', session.userData.imc, configProp.overweight);
                 session.beginDialog('/programs');
             }
         ]);
 
         bot.dialog('/programs', [
             function(session, args) {
-                builder.Prompts.choice(session, config.askfrequency, ["1 a week", "2 a week", "3 a week"]);
+                builder.Prompts.choice(session, configProp.askfrequency, ["1 a week", "2 a week", "3 a week"]);
             },
             function(session, results) {
                 session.userData.frequency = results.response.entity;
-                builder.Prompts.choice(session, config.askfrequency, ["20 min", "30 min", "More than 1 hour"]);
+                builder.Prompts.choice(session, configProp.askfrequency, ["20 min", "30 min", "More than 1 hour"]);
             },
             function(session, results) {
                 session.userData.time = results.response.entity;
-                session.send('%s', config.programs);
+                session.send('%s', configProp.programs);
                 session.send(createCarrousselProgram(jsonProgram[0],jsonProgram[1],jsonProgram[2],session));
-                session.send('%s', config.thanks);
-                builder.Prompts.text(session, config.anythingelse);
+                session.send('%s', configProp.thanks);
+                builder.Prompts.text(session, configProp.anythingelse);
             },
             function(session, results) {
                 session.userData.stuff = results.response;
@@ -119,7 +120,7 @@ config.load(
 //
         bot.dialog('/store', [
             function(session, args) {
-                session.send('%s', config.outfit);
+                session.send('%s', configProp.outfit);
                  session.send(createCarrousselOutfit(outfits[1],outfits[3],outfits[5],session));
                  session.beginDialog('/end');
             }
@@ -133,7 +134,7 @@ config.load(
                 }
                 session.send("Some tips for fun.");
                  session.send(createCarrousselTips(tips[0],tips[1],tips[2],tips[3],session));
-                session.endConversation("%s See you later %s !", config.end, session.userData.name);
+                session.endConversation("%s See you later %s !", configProp.end, session.userData.name);
             }
         ]);
 
