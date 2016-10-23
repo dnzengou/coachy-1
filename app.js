@@ -1,8 +1,8 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-var config = require('./modules/config.js');
+var config = require('./modules/configProp.js');
 var logger = require('./modules/logger.js');
-
+//var configPort = require('./config/config.js');
 var exos = require('./json/exos.json');
 var jsonProgram = require('./json/programs.json');
 var tips = require('./json/tips.json');
